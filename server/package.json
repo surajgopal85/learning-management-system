@@ -1,0 +1,17 @@
+{
+  "name": "minimal-express-app",
+  "version": "1.0.0",
+  "description": "A minimal Express application",
+  "main": "app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "reset-db": "rm -f database.sqlite && sqlite3 database.sqlite < db/schema.sql"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "sqlite3": "^5.1.7"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

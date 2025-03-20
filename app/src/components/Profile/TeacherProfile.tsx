@@ -34,10 +34,15 @@ export const TeacherProfile: React.FC = () => {
         }))
     }
 
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log("TeacherFormData: ", teacherFormData);
+    }
+
 
     return (
         <div>
-            <form className='teacher-form'>
+            <form onSubmit={handleSubmit} className='teacher-form'>
                 <label>
                     First Name
                     <input type="text" name="firstName" value={teacherFormData.firstName} onChange={handleFormChange}>

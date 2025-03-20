@@ -63,6 +63,8 @@ export const TeacherProfile: React.FC = () => {
 
                 {/* looked this up, i didn't know about fieldset! */}
                 <fieldset>
+                    {/* add legend after reading about <fieldset></fieldset> */}
+                <legend>Choose Your Subjects</legend>
                 {SUBJECTS.map((subject) => (
                     <label key={subject}>
                         <input 

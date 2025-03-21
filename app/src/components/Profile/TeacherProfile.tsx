@@ -11,72 +11,50 @@ interface TeacherForm {
 const SUBJECTS = ['English', 'History', 'Math', 'Science']
 
 export const TeacherProfile: React.FC = () => {
-    // useState for TeacherForm object => init empty
-    const [teacherFormData, setTeacherFormData] = useState<TeacherForm>({
-        firstName: '',
-        lastName: '',
-        email: '',
-        subjects: []
-    })
-
-    // handle any change in form data
-    const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTeacherFormData({...teacherFormData, [e.target.name]: e.target.value})
-    }
-    // specifically handle subject multi-select change
-    // set subjects to any subject that is added and was not previously in subjects[]
-    const handleSubjectChange = (subject: string) => {
-        setTeacherFormData((prevState) => ({
-            ...prevState, 
-            subjects: prevState.subjects.includes(subject) ? 
-            prevState.subjects.filter((curr) => curr !== subject) :
-            [...prevState.subjects, subject]
-        }))
-    }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        // Get form data
+        const formData = new FormData(e.currentTarget)
+
+        // FormData only includes checked checkboxes
+        const subjects = formData.getAll('subjects') as string[];
+
+        const teacherFormData = {
+            firstName: formData.get('firstName') as string,
+            lastName: formData.get('lastName') as string,
+            email: formData.get('email') as string,
+            subjects: subjects // This will only contain checked values
+        };
         console.log("TeacherFormData: ", teacherFormData);
     }
-
 
     return (
         <div>
             <form onSubmit={handleSubmit} className='teacher-form'>
                 <label>
                     First Name
-                    <input type="text" name="firstName" value={teacherFormData.firstName} onChange={handleFormChange}>
-                    </input>
+                    <input type="text" name="firstName"></input>
                 </label>
 
                 <label>
                     Last Name
-                    <input type="text" name="lastName" value={teacherFormData.lastName} onChange={handleFormChange}>
-                    </input>
+                    <input type="text" name="lastName"></input>
                 </label>
 
                 <label>
                     Email
-                    <input type="text" name="email" value={teacherFormData.email} onChange={handleFormChange}>
-                    </input>
+                    <input type="text" name="email"></input>
                 </label>
 
-                {/* looked this up, i didn't know about fieldset! */}
                 <fieldset>
-                    {/* add legend after reading about <fieldset></fieldset> */}
-                <legend>Choose Your Subjects</legend>
-                {SUBJECTS.map((subject) => (
-                    <label key={subject}>
-                        <input 
-                            type="checkbox"
-                            value={subject}
-                            checked={teacherFormData.subjects.includes(subject)}
-                            onChange={() => handleSubjectChange(subject)}
-                        />
-
-                        {subject}
-                    </label>
-                ))}
+                    <legend>Choose Your Subjects</legend>
+                    {SUBJECTS.map((subject) => (
+                        <label key={subject}>
+                            <input type="checkbox" name="subjects" value={subject} />
+                            {subject}
+                        </label>
+                    ))}
                 </fieldset>
                 <button type="submit">Make Profile</button>
             </form>

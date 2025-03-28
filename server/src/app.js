@@ -6,8 +6,8 @@ const port = 3001;
 app.use(express.json());
 
 // Routes
-const indexRouter = require("./routes/index");
-app.use("/", indexRouter);
+const apiRouter = require("./routes/index");
+app.use("/api", apiRouter);
 
 // Start server
 app.listen(port, () => {

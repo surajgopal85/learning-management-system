@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './TeacherProfile.css';
+import { addTeacher } from './../../api/teachersApi';
 
 interface TeacherForm {
     firstName: string,
@@ -37,27 +38,30 @@ export const TeacherProfile: React.FC = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("TeacherFormData: ", teacherFormData);
+        const { firstName, lastName, email } = teacherFormData;
+        addTeacher(firstName, lastName, email);
     }
 
 
     return (
+    <center>
         <div>
             <form onSubmit={handleSubmit} className='teacher-form'>
                 <label>
                     First Name
-                    <input type="text" name="firstName" value={teacherFormData.firstName} onChange={handleFormChange}>
+                    <input type="text" name="firstName" value={teacherFormData.firstName} placeholder='First Name' onChange={handleFormChange}>
                     </input>
                 </label>
 
                 <label>
                     Last Name
-                    <input type="text" name="lastName" value={teacherFormData.lastName} onChange={handleFormChange}>
+                    <input type="text" name="lastName" value={teacherFormData.lastName} placeholder='Last Name' onChange={handleFormChange}>
                     </input>
                 </label>
 
                 <label>
                     Email
-                    <input type="text" name="email" value={teacherFormData.email} onChange={handleFormChange}>
+                    <input type="text" name="email" value={teacherFormData.email} placeholder='Email' onChange={handleFormChange}>
                     </input>
                 </label>
 
@@ -81,6 +85,7 @@ export const TeacherProfile: React.FC = () => {
                 <button type="submit">Make Profile</button>
             </form>
         </div>
+    </center>
     );
 };
 

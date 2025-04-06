@@ -12,31 +12,19 @@ interface TeacherForm {
 const SUBJECTS = ['English', 'History', 'Math', 'Science']
 
 export const TeacherProfile: React.FC = () => {
-    // useState for TeacherForm object => init empty
-    const [teacherFormData, setTeacherFormData] = useState<TeacherForm>({
-        firstName: '',
-        lastName: '',
-        email: '',
-        subjects: []
-    })
-
-    // handle any change in form data
-    const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTeacherFormData({...teacherFormData, [e.target.name]: e.target.value})
-    }
-    // specifically handle subject multi-select change
-    // set subjects to any subject that is added and was not previously in subjects[]
-    const handleSubjectChange = (subject: string) => {
-        setTeacherFormData((prevState) => ({
-            ...prevState, 
-            subjects: prevState.subjects.includes(subject) ? 
-            prevState.subjects.filter((curr) => curr !== subject) :
-            [...prevState.subjects, subject]
-        }))
-    }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        const formData = new FormData(e.currentTarget)
+        const subjects = formData.getAll
+
+        const teacherFormData = {
+            firstName: formData.get('firstName') as string,
+            lastName: formData.get('lastName') as string,
+            email: formData.get('email') as string,
+            subjects: subjects // This will only contain checked values
+        };
         console.log("TeacherFormData: ", teacherFormData);
         const { firstName, lastName, email } = teacherFormData;
         addTeacher(firstName, lastName, email);
@@ -49,19 +37,19 @@ export const TeacherProfile: React.FC = () => {
             <form onSubmit={handleSubmit} className='teacher-form'>
                 <label>
                     First Name
-                    <input type="text" name="firstName" value={teacherFormData.firstName} placeholder='First Name' onChange={handleFormChange}>
+                    <input type="text" name="firstName" placeholder='First Name'>
                     </input>
                 </label>
 
                 <label>
                     Last Name
-                    <input type="text" name="lastName" value={teacherFormData.lastName} placeholder='Last Name' onChange={handleFormChange}>
+                    <input type="text" name="lastName" placeholder='Last Name'>
                     </input>
                 </label>
 
                 <label>
                     Email
-                    <input type="text" name="email" value={teacherFormData.email} placeholder='Email' onChange={handleFormChange}>
+                    <input type="text" name="email" placeholder='Email'>
                     </input>
                 </label>
 
@@ -73,11 +61,9 @@ export const TeacherProfile: React.FC = () => {
                     <label key={subject}>
                         <input 
                             type="checkbox"
+                            name="subjects"
                             value={subject}
-                            checked={teacherFormData.subjects.includes(subject)}
-                            onChange={() => handleSubjectChange(subject)}
                         />
-
                         {subject}
                     </label>
                 ))}

@@ -3,20 +3,21 @@ CREATE TABLE thing(
 );
 
 CREATE TABLE teachers(
-  id SERIAL PRIMARY KEY,
-  firstName VARCHAR(255) NOT NULL,
-  lastName VARCHAR(255) NOT NULL,
-  email VARCHAR(255) UNIQUE NOT NULL
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  firstName TEXT NOT NULL,
+  lastName TEXT NOT NULL,
+  email TEXT UNIQUE NOT NULL -- important that no 2 users have same email
 );
 
 -- separate subjects
 CREATE TABLE teacher_subjects(
-  id SERIAL PRIMARY KEY,
-  teacher_id INT REFERENCES teachers(id) ON DELETE CASCADE,
-  subject VARCHAR(255) NOT NULL
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  teacher_id INTEGER,
+  subject TEXT NOT NULL,
+  FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE CASCADE
 );
 
 CREATE TABLE subjects (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255) UNIQUE NOT NULL
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT UNIQUE NOT NULL
 );

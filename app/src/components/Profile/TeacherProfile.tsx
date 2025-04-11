@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './TeacherProfile.css';
 import { addTeacher } from './../../api/teachersApi';
 

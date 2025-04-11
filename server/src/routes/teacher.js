@@ -24,4 +24,18 @@ router.get("/teachers", (_, res) => {
   });
 });
 
+router.delete('/teachers/:id', (req, res) => {
+  // Logic to delete the resource
+  const { id } = req.params; // testing here
+  const sql = "DELETE FROM teachers WHERE id = (?)";
+  db.run(sql, [id], function (err) {
+    if (err) {
+      console.error("Error deleting from database", err.message);
+      return res.status(500).send("Error deleting from database"); // placeholder
+    }
+    res.send(`teacher deleted with id: ${id}`);
+  });
+  // res.status(204).send();
+});
+
 module.exports = router;

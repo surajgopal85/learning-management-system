@@ -21,3 +21,17 @@ export async function addTeacher(firstName: string, lastName: string, email: str
     }
     return response.text();
 }
+
+export async function deleteTeacher(id: number) {
+    const response = await fetch(`${API_URL}/teachers/${id}`, {
+        method: "DELETE",
+        // headers: {
+        //     "Content-Type": "application/json",
+        // },
+        // body: JSON.stringify({ id }),
+    });
+    if(!response.ok) {
+        throw new Error('Failed to delete teacher');
+    }
+    return response.text();
+}

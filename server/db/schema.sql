@@ -13,8 +13,9 @@ CREATE TABLE teachers(
 CREATE TABLE teacher_subjects(
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   teacher_id INTEGER,
-  subject TEXT NOT NULL,
-  FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE CASCADE
+  subject_id INTEGER,
+  FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE CASCADE,
+  FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
 );
 
 CREATE TABLE subjects (

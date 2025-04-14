@@ -194,7 +194,7 @@ router.put('/teachers/:id', (req, res) => {
 
         // now if there's nothing there
         if(subjects.length === 0) {
-          return res.status(200).send(`Teacher with id ${id} updated (no subjects)`);
+          return res.status(200).json({ message: '`Teacher with id ${id} updated (no subjects)`'});
         }
 
          // Build insert statement dynamically
@@ -206,11 +206,11 @@ router.put('/teachers/:id', (req, res) => {
             return res.status(500).send('Error updating teacher subjects');
           }
 
-          res.status(200).send(`Teacher with id ${id} and subjects updated successfully!`);
+          res.status(200).json({ message: `Teacher with id ${id} and subjects updated successfully!`});
         });
       });
     } else {
-      res.status(200).send(`Teacher with id ${id} updated successfully (no subjects changed)!`);
+      return res.status(200).json({ message: `Teacher with id ${id} updated successfully (no subjects changed)!`});
     }
   });
 });

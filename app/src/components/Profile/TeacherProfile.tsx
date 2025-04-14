@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './TeacherProfile.css';
 import { addTeacher } from './../../api/teachersApi';
+import { getSubjects } from '../../api/subjectsApi';
 
 interface TeacherForm {
     firstName: string,
@@ -9,26 +10,48 @@ interface TeacherForm {
     subjects: string[]
 }
 
-const SUBJECTS = ['English', 'History', 'Math', 'Science']
+interface Subject {
+    id: number;
+    name: string;
+}
+// const SUBJECTS = ['English', 'History', 'Math', 'Science']
 
 export const TeacherProfile: React.FC = () => {
+    const [subjects, setSubjects] = useState<Subject[]>([]);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+  useEffect(() => {
+    const fetchSubjects = async () => {
+        try {
+          const subjectsData = await getSubjects();
+          setSubjects(subjectsData);
+        } catch (error) {
+          console.error("Error fetching subjects:", error);
+        }
+      };
+    
+      fetchSubjects();
+  }, []);
 
-        const formData = new FormData(e.currentTarget)
-        const subjects = formData.getAll
 
-        const teacherFormData = {
-            firstName: formData.get('firstName') as string,
-            lastName: formData.get('lastName') as string,
-            email: formData.get('email') as string,
-            subjects: subjects // This will only contain checked values
-        };
-        console.log("TeacherFormData: ", teacherFormData);
-        const { firstName, lastName, email } = teacherFormData;
-        addTeacher(firstName, lastName, email);
-    }
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const selectedSubjects = formData.getAll('subjects') as string[];
+
+    const teacherFormData = {
+      firstName: formData.get('firstName') as string,
+      lastName: formData.get('lastName') as string,
+      email: formData.get('email') as string,
+      subjects: selectedSubjects // These will be subject IDs now
+    };
+
+    console.log("TeacherFormData: ", teacherFormData);
+
+    const { firstName, lastName, email, subjects } = teacherFormData;
+    addTeacher(firstName, lastName, email, subjects)
+      .then((res) => console.log("Success:", res))
+      .catch((err) => console.error("Error:", err));
+  };
 
 
     return (
@@ -57,14 +80,14 @@ export const TeacherProfile: React.FC = () => {
                 <fieldset>
                     {/* add legend after reading about <fieldset></fieldset> */}
                 <legend>Choose Your Subjects</legend>
-                {SUBJECTS.map((subject) => (
-                    <label key={subject}>
+                {subjects.map((subject) => (
+                    <label key={subject.id}>
                         <input 
                             type="checkbox"
                             name="subjects"
-                            value={subject}
+                            value={subject.id}
                         />
-                        {subject}
+                        {subject.name}
                     </label>
                 ))}
                 </fieldset>

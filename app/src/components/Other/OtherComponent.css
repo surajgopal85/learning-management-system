@@ -11,3 +11,7 @@
 .other-container p {
   color: #666;
 }
+
+ul li {
+  font-style: bold;
+}

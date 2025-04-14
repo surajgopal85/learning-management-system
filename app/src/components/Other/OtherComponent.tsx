@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./OtherComponent.css";
-import { getTeachers, addTeacher, deleteTeacher } from "../../api/teachersApi";
+import { getTeachers, deleteTeacher } from "../../api/teachersApi";
+import { Link } from "react-router-dom";
 
 
 interface Teacher {
@@ -8,6 +9,7 @@ interface Teacher {
   firstName: string,
   lastName: string,
   email: string,
+  subjects: string[]
 }
 
 const OtherComponent: React.FC = () => {
@@ -38,12 +40,15 @@ const OtherComponent: React.FC = () => {
 
   return (
     <div className="other-container">
-      <h1>Other Page</h1>
-      <p>This is the other page.</p>
+      <h1>All Teachers</h1>
+      <p>Current teacher roster. Edit information or remove teachers here.</p>
       <ul>
         {teachers.map((teacher) => (
           <li key={teacher.id}>
-            {teacher.firstName} {teacher.lastName}: {teacher.email}
+            {teacher.firstName} {teacher.lastName}: {teacher.email} - <span>Subjects Taught: {Array.isArray(teacher.subjects) ? teacher.subjects.join(", ") : "None"}</span>
+            <Link to={`/editProfile/${teacher.id}`} style={{ marginLeft: '10px' }}>
+              Edit
+            </Link>
             <button onClick={() => handleDelete(teacher.id)}>Delete teacher</button>
           </li>
 

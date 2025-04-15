@@ -1,26 +1,28 @@
 import { useState, useEffect } from 'react';
 import { getTeacher, updateTeacher } from "../../api/teachersApi";
 import { getSubjects } from '../../api/subjectsApi';
+import { TeacherWithSubjectIds } from '../../types/teacher';
+import { Subject } from '../../types/subject';
 
-interface Subject {
-  id: number;
-  name: string;
-}
-
-interface Teacher {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  subjects: number[];
-}
+// replace with TYPE!
+// interface Subject {
+//   id: number;
+//   name: string;
+// }
+// interface Teacher {
+//   id: number;
+//   firstName: string;
+//   lastName: string;
+//   email: string;
+//   subjects: number[];
+// }
 
 interface EditTeacherProfileProps {
   teacherId: number;
 }
 
 export const EditTeacherProfile: React.FC<EditTeacherProfileProps> = ({ teacherId }) => {
-  const [teacher, setTeacher] = useState<Teacher | null>(null);
+  const [teacher, setTeacher] = useState<TeacherWithSubjectIds | null>(null);
   const [availableSubjects, setAvailableSubjects] = useState<Subject[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);

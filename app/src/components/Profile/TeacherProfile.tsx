@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './TeacherProfile.css';
 import { addTeacher } from './../../api/teachersApi';
 import { getSubjects } from '../../api/subjectsApi';
+import { AddTeacherForm } from '../../types/teacher';
+import { Subject } from '../../types/subject';
 
 interface TeacherForm {
     firstName: string,
@@ -10,10 +12,10 @@ interface TeacherForm {
     subjects: string[]
 }
 
-interface Subject {
-    id: number;
-    name: string;
-}
+// interface Subject {
+//     id: number;
+//     name: string;
+// }
 // const SUBJECTS = ['English', 'History', 'Math', 'Science']
 
 export const TeacherProfile: React.FC = () => {
@@ -38,7 +40,7 @@ export const TeacherProfile: React.FC = () => {
     const formData = new FormData(e.currentTarget);
     const selectedSubjects = formData.getAll('subjects') as string[];
 
-    const teacherFormData = {
+    const teacherFormData: AddTeacherForm = {
       firstName: formData.get('firstName') as string,
       lastName: formData.get('lastName') as string,
       email: formData.get('email') as string,

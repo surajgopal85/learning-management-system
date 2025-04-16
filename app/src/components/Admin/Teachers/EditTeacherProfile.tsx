@@ -1,27 +1,17 @@
 import { useState, useEffect } from 'react';
-import { getTeacher, updateTeacher } from "../../api/teachersApi";
-import { getSubjects } from '../../api/subjectsApi';
-import { TeacherWithSubjectIds } from '../../types/teacher';
-import { Subject } from '../../types/subject';
-
-// replace with TYPE!
-// interface Subject {
-//   id: number;
-//   name: string;
-// }
-// interface Teacher {
-//   id: number;
-//   firstName: string;
-//   lastName: string;
-//   email: string;
-//   subjects: number[];
-// }
+import { useNavigate } from 'react-router-dom';
+import { getTeacher, updateTeacher } from "../../../api/teachersApi";
+import { getSubjects } from '../../../api/subjectsApi';
+import { TeacherWithSubjectIds } from '../../../types/teacher';
+import { Subject } from '../../../types/subject';
 
 interface EditTeacherProfileProps {
   teacherId: number;
 }
 
 export const EditTeacherProfile: React.FC<EditTeacherProfileProps> = ({ teacherId }) => {
+  const navigate = useNavigate(); // navigate back to adminview
+
   const [teacher, setTeacher] = useState<TeacherWithSubjectIds | null>(null);
   const [availableSubjects, setAvailableSubjects] = useState<Subject[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -67,7 +57,8 @@ export const EditTeacherProfile: React.FC<EditTeacherProfileProps> = ({ teacherI
 
     try {
       await updateTeacher(teacherId, { firstName, lastName, email, subjects });
-      alert('Teacher profile updated!');
+      navigate('/admin/teachers'); // instead of alert, navigate
+      // alert('Teacher profile updated!');
     } catch (err) {
       console.error(err);
       setError('Failed to update teacher');

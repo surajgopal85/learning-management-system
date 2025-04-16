@@ -1,9 +1,9 @@
 // EditTeacherPage.tsx
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { getTeachers } from '../../api/teachersApi';
-import { EditTeacherProfile } from './EditProfile';
-import { TeacherWithSubjectNames } from '../../types/teacher';
+import { getTeachers } from '../../../api/teachersApi';
+import { EditTeacherProfile } from './EditTeacherProfile';
+import { TeacherWithSubjectNames } from '../../../types/teacher';
 
 // adding a TYPE!
 // interface Teacher {

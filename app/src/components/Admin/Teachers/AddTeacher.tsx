@@ -1,24 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './TeacherProfile.css';
-import { addTeacher } from './../../api/teachersApi';
-import { getSubjects } from '../../api/subjectsApi';
-import { AddTeacherForm } from '../../types/teacher';
-import { Subject } from '../../types/subject';
+import { addTeacher } from '../../../api/teachersApi';
+import { getSubjects } from '../../../api/subjectsApi';
+import { AddTeacherForm } from '../../../types/teacher';
+import { Subject } from '../../../types/subject';
 
-interface TeacherForm {
-    firstName: string,
-    lastName: string,
-    email: string,
-    subjects: string[]
-}
+interface AddTeacherProps {
+    onAddSuccess: () => Promise<void>;
+  }
 
-// interface Subject {
-//     id: number;
-//     name: string;
-// }
-// const SUBJECTS = ['English', 'History', 'Math', 'Science']
-
-export const TeacherProfile: React.FC = () => {
+export const AddTeacher: React.FC<AddTeacherProps> = ({ onAddSuccess }) => {
     const [subjects, setSubjects] = useState<Subject[]>([]);
 
   useEffect(() => {
@@ -51,13 +42,18 @@ export const TeacherProfile: React.FC = () => {
 
     const { firstName, lastName, email, subjects } = teacherFormData;
     addTeacher(firstName, lastName, email, subjects)
-      .then((res) => console.log("Success:", res))
+      .then(() => {
+        console.log("Teacher added successfully!");
+        onAddSuccess(); // 🔁 Trigger refresh
+      })
       .catch((err) => console.error("Error:", err));
   };
 
 
     return (
     <center>
+        <h1>#MySchool Roster</h1>
+        <h2>Add Teacher</h2>
         <div>
             <form onSubmit={handleSubmit} className='teacher-form'>
                 <label>

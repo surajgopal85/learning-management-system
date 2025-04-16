@@ -4,10 +4,7 @@ import { addTeacher } from '../../../api/teachersApi';
 import { getSubjects } from '../../../api/subjectsApi';
 import { AddTeacherForm } from '../../../types/teacher';
 import { Subject } from '../../../types/subject';
-
-interface AddTeacherProps {
-    onAddSuccess: () => Promise<void>;
-  }
+import { AddTeacherProps } from '../../../types/teacher';
 
 export const AddTeacher: React.FC<AddTeacherProps> = ({ onAddSuccess }) => {
     const [subjects, setSubjects] = useState<Subject[]>([]);

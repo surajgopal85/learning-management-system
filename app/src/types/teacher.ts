@@ -33,3 +33,12 @@ export type TeacherWithSubjectNames = {
     email: string;
     subjects: string[]; // e.g., ['Math', 'Biology']
 };
+
+// on add success, we get a promise
+export type AddTeacherProps = {
+    onAddSuccess: () => Promise<void>;
+};
+
+export type EditTeacherProfileProps = {
+    teacherId: number;
+}

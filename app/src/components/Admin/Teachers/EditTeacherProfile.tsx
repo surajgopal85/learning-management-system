@@ -4,10 +4,7 @@ import { getTeacher, updateTeacher } from "../../../api/teachersApi";
 import { getSubjects } from '../../../api/subjectsApi';
 import { TeacherWithSubjectIds } from '../../../types/teacher';
 import { Subject } from '../../../types/subject';
-
-interface EditTeacherProfileProps {
-  teacherId: number;
-}
+import { EditTeacherProfileProps } from '../../../types/teacher';
 
 export const EditTeacherProfile: React.FC<EditTeacherProfileProps> = ({ teacherId }) => {
   const navigate = useNavigate(); // navigate back to adminview

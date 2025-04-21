@@ -1,31 +1,32 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import ThingComponent from "./components/ThingComponent";
-import OtherComponent from "./components/Other/OtherComponent";
-import { TeacherProfile } from "./components/Profile/TeacherProfile";
+import { AboutSchool } from "./components/About";
+import { AdminTeacherView } from "./components/Admin/AdminTeacherView";
+import { EditTeacherPage } from "./components/Admin/Teachers/EditTeacherPage";
+import './App.css';
 
 const App: React.FC = () => {
   return (
     <Router>
       <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/other">Other</Link>
-            </li>
-            <li>
-              <Link to="/buildProfile">Profile</Link>
-            </li>
-          </ul>
-        </nav>
+        <div className="admin-nav">
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/admin/teachers">Admin - View & Change Teacher Roster</Link>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        
 
         <Routes>
-          <Route path="/" element={<ThingComponent />} />
-          <Route path="/other" element={<OtherComponent />} />
-          <Route path="/buildProfile" element={<TeacherProfile />} />
+          <Route path="/" element={<AboutSchool />} />
+          <Route path="/admin/teachers" element={<AdminTeacherView />} />
+          <Route path="/editProfile/:id" element={<EditTeacherPage />} />
         </Routes>
       </div>
     </Router>

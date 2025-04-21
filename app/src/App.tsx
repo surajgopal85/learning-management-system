@@ -26,7 +26,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<AboutSchool />} />
           <Route path="/admin/teachers" element={<AdminTeacherView />} />
-          <Route path="/editProfile/:id" element={<EditTeacherPage />} />
+          <Route path="/admin/teacher/edit/:id" element={<EditTeacherPage />} />
         </Routes>
       </div>
     </Router>

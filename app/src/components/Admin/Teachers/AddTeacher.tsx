@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './TeacherProfile.css';
 import { addTeacher } from '../../../api/teachersApi';
 import { getSubjects } from '../../../api/subjectsApi';
@@ -8,6 +8,7 @@ import { AddTeacherProps } from '../../../types/teacher';
 
 export const AddTeacher: React.FC<AddTeacherProps> = ({ onAddSuccess }) => {
     const [subjects, setSubjects] = useState<Subject[]>([]);
+    const teacherFormRef = useRef<HTMLFormElement>(null); // 
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -23,7 +24,7 @@ export const AddTeacher: React.FC<AddTeacherProps> = ({ onAddSuccess }) => {
   }, []);
 
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const selectedSubjects = formData.getAll('subjects') as string[];
@@ -35,15 +36,15 @@ export const AddTeacher: React.FC<AddTeacherProps> = ({ onAddSuccess }) => {
       subjects: selectedSubjects // These will be subject IDs now
     };
 
-    console.log("TeacherFormData: ", teacherFormData);
-
     const { firstName, lastName, email, subjects } = teacherFormData;
-    addTeacher(firstName, lastName, email, subjects)
-      .then(() => {
-        console.log("Teacher added successfully!");
-        onAddSuccess(); // 🔁 Trigger refresh
-      })
-      .catch((err) => console.error("Error:", err));
+    try {
+        await addTeacher(firstName, lastName, email, subjects);
+        console.log('teacher added successfully!');
+        onAddSuccess();
+    } catch(err) {
+        console.error('error: ', err);
+    }
+      teacherFormRef.current?.reset();
   };
 
 
@@ -52,7 +53,7 @@ export const AddTeacher: React.FC<AddTeacherProps> = ({ onAddSuccess }) => {
         <h1>#MySchool Roster</h1>
         <h2>Add Teacher</h2>
         <div>
-            <form onSubmit={handleSubmit} className='teacher-form'>
+            <form ref={teacherFormRef} onSubmit={handleSubmit} className='teacher-form'>
                 <label>
                     First Name
                     <input type="text" name="firstName" placeholder='First Name'>

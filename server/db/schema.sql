@@ -1,6 +1,14 @@
-CREATE TABLE thing(
-  name TEXT
-);
+-- Drop tables (reverse dependency)
+DROP TABLE IF EXISTS grades;
+DROP TABLE IF EXISTS assignments;
+DROP TABLE IF EXISTS assignment_categories;
+DROP TABLE IF EXISTS course_students;
+DROP TABLE IF EXISTS students;
+DROP TABLE IF EXISTS course_teachers;
+DROP TABLE IF EXISTS courses;
+DROP TABLE IF EXISTS teacher_subjects;
+DROP TABLE IF EXISTS subjects;
+DROP TABLE IF EXISTS teachers;
 
 CREATE TABLE teachers(
   id INTEGER PRIMARY KEY AUTOINCREMENT,

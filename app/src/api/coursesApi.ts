@@ -8,6 +8,6 @@ export async function getCourses() {
     return res.json();
 }
 
-export async function createCourse() {
+export async function addCourse(name: string, subjectId: number, teachers: number[], students: number[]) {
     
 }

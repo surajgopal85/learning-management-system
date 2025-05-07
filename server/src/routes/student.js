@@ -11,3 +11,18 @@ router.get("/students", (req, res) => {
       res.json(rows); // Send the students as JSON
     });
   });
+
+router.post('/students', (req, res) => {
+    const { firstName, lastName, dateOfBirth, email, grade } = req.body;
+
+    const insertStudentSql = 
+    "INSERT INTO students (firstName, lastName, dateOfBirth, email, grade) VALUES (?, ?, ?, ?, ?)";
+    db.run(insertStudentSql, )
+    if (err) {
+        console.error("❌ Error inserting student:", err.message);
+        return res.status(500).send("Error inserting student");
+    }
+
+    const studentId = this.lastId;
+
+})

@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router;
+const router = express.Router();
 const db = require('../util/db');
 
 router.get("/students", (req, res) => {
@@ -13,16 +13,23 @@ router.get("/students", (req, res) => {
   });
 
 router.post('/students', (req, res) => {
-    const { firstName, lastName, dateOfBirth, email, grade } = req.body;
+    const { firstName, lastName, dateOfBirth, email, grade, credits } = req.body;
 
     const insertStudentSql = 
-    "INSERT INTO students (firstName, lastName, dateOfBirth, email, grade) VALUES (?, ?, ?, ?, ?)";
-    db.run(insertStudentSql, )
-    if (err) {
-        console.error("❌ Error inserting student:", err.message);
-        return res.status(500).send("Error inserting student");
-    }
+    "INSERT INTO students (firstName, lastName, dateOfBirth, email, grade, credits) VALUES (?, ?, ?, ?, ?, ?)";
+    db.run(insertStudentSql, [firstName, lastName, dateOfBirth, email, grade, credits], function(err) {
 
-    const studentId = this.lastId;
+      if (err) {
+          console.error("❌ Error inserting student:", err.message);
+          return res.status(500).send("Error inserting student");
+      }
 
-})
+      const studentId = this.lastID;
+
+      return res.status(200).send({
+        message: `✅ Student added with ID: ${studentId}, no subjects added.`,
+      });
+    });
+  });
+
+module.exports = router;

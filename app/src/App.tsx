@@ -4,6 +4,7 @@ import { AboutSchool } from "./components/About";
 import { AdminTeacherView } from "./components/Admin/AdminTeacherView";
 import { AdminCoursesView } from "./components/Admin/Courses/AdminCoursesView";
 import { EditTeacherPage } from "./components/Admin/Teachers/EditTeacherPage";
+import { AdminStudentView } from "./components/Admin/AdminStudentView";
 import './App.css';
 import { AddCourse } from "./components/Admin/Courses/AddCourse";
 
@@ -23,6 +24,9 @@ const App: React.FC = () => {
               <li>
                 <Link to="/admin/teachers">Admin - View & Change Teacher Roster</Link>
               </li>
+              <li>
+                <Link to='/admin/students'>Admin - Add Student (more coming)</Link>
+              </li>
             </ul>
           </nav>
         </div>
@@ -33,6 +37,7 @@ const App: React.FC = () => {
           <Route path="/admin/teachers" element={<AdminTeacherView />} />
           <Route path="/admin/teacher/edit/:id" element={<EditTeacherPage />} />
           <Route path="/admin/courses" element={<AdminCoursesView />} />
+          <Route path="/admin/students" element={<AdminStudentView />} />
         </Routes>
       </div>
     </Router>

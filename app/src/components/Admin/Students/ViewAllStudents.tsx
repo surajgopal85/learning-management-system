@@ -1,4 +1,4 @@
-import { AddStudentForm } from "../../../types/student";
+// import { AddStudentForm } from "../../../types/student";
 import "./ViewAllStudents.css";
 import { Link } from "react-router-dom";
 import { ViewStudentBody } from "../../../types/student";

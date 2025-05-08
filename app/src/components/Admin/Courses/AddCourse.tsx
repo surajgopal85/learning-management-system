@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { getTeachers } from "../../../api/teachersApi";
 import { Subject } from "../../../types/subject";
-import { Teacher, TeacherWithSubjectNames } from "../../../types/teacher";
+import { TeacherWithSubjectNames } from "../../../types/teacher";
 import { getSubjects } from "../../../api/subjectsApi";
 
 export const AddCourse: React.FC = () => {
@@ -35,7 +35,7 @@ export const AddCourse: React.FC = () => {
         }
 
         fetchTeachers();
-      })
+      }, []);
 
       const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         console.log('hell0, course form here!')
@@ -90,5 +90,3 @@ export const AddCourse: React.FC = () => {
         </center>
     );
 }
-
-{/* <li key={teacher.id}>{teacher.firstName} {teacher.lastName}, Subjects: Taught: {Array.isArray(teacher.subjects) ? teacher.subjects.join(", ") : "None"}</li> */}

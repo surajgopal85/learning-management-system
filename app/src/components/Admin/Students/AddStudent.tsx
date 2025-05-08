@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import './AddStudent.css';
 import { addStudent } from './../../../api/studentsApi';
 import { AddStudentForm, AddStudentProps } from '../../../types/student';

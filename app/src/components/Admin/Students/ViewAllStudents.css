@@ -1,0 +1,18 @@
+.other-container {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .other-container h1 {
+    color: #333;
+  }
+  
+  .other-container p {
+    color: #666;
+  }
+  
+  ul li {
+    font-style: bold;
+  }
+  

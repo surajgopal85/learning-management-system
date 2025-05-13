@@ -1,4 +1,5 @@
 import { Student } from "./student";
+import { Teacher } from "./teacher";
 
 export type Course = {
     id: number;
@@ -7,6 +8,25 @@ export type Course = {
     teachers: number[];
     students: number[];
     assignmentCategories: AssignmentCategory[];
+}
+
+export type AdminAllCourseView = {
+    id: number;
+    name: string;
+    subject: string;
+    teachers: {
+        id: number;
+        name: string;
+    }[];
+    students: {
+        id: number;
+        name: string;
+    }[];
+    assignmentCategories: AssignmentCategory[];
+}
+
+export type AddCourseProps = {
+    onAddSuccess: () => Promise<void>;
 }
 
 // ex. participation, exams, homework, classwork, etc...

@@ -34,7 +34,7 @@ CREATE TABLE subjects (
 CREATE TABLE courses (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT UNIQUE NOT NULL, -- no 2+ courses w same name
-  subject_id INTEGER NOT NULL, -- all courses exist within a subject
+  subject_id INTEGER NOT NULL, -- all courses exist within a subject -- need to ADD CREDITS FOR EACH COURSE
   UNIQUE(name, subject_id), -- technically could have same name, diff subject area
   FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
 );

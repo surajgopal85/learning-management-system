@@ -3,6 +3,7 @@ import { getTeachers } from "../../../api/teachersApi";
 import { Subject } from "../../../types/subject";
 import { TeacherWithSubjectNames } from "../../../types/teacher";
 import { getSubjects } from "../../../api/subjectsApi";
+import { addCourse } from "../../../api/coursesApi";
 
 export const AddCourse: React.FC = () => {
     const [subjects, setSubjects] = useState<Subject[]>([]);
@@ -38,7 +39,31 @@ export const AddCourse: React.FC = () => {
       }, []);
 
       const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        console.log('hell0, course form here!')
+        e.preventDefault();
+
+        const form = e.currentTarget;
+        const formData = new FormData(form);
+        const name = formData.get("name")?.toString().trim();
+        const subjectId = Number(formData.get("subject"));
+
+        // check off - need at least 1 teacher...
+        const teacherCheckboxes = form.querySelectorAll<HTMLInputElement>('input[name="teachers"]:checked');
+        const teacherIds = Array.from(teacherCheckboxes).map((checkbox) => Number(checkbox.value));
+
+        if (!name || !subjectId || teacherIds.length === 0) {
+            alert("Please fill in all fields and select at least one teacher.");
+            return;
+        }
+
+        try {
+            await addCourse(name, subjectId, teacherIds);
+            alert("✅ Course added!");
+            form.reset();
+        } catch (error) {
+            console.error("❌ Failed to add course:", error);
+            alert("Failed to add course.");
+        }
+
       }
 
     
@@ -59,7 +84,7 @@ export const AddCourse: React.FC = () => {
                     <label key={subject.id}>
                         <input 
                             type="radio"
-                            name="subjects"
+                            name="subject"
                             value={subject.id}
                         />
                         {subject.name}
@@ -72,8 +97,8 @@ export const AddCourse: React.FC = () => {
                 <legend>Course Instructor</legend>
                 <ul>
                         {teachers.map((teacher) => (
-                        <li>
-                            <label key={teacher.id}>
+                        <li key={teacher.id}>
+                            <label>
                                 <input 
                                     type="checkbox"
                                     name="teachers"

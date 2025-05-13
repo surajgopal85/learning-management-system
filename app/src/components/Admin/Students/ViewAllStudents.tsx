@@ -14,12 +14,12 @@ export const ViewAllStudents: React.FC<ViewAllStudentsProps> = ({ students }) =>
   return (
     <div className="other-container">
       <h1>All Students</h1>
-      <p>Current teacher roster. Edit information or remove teachers here.</p>
+      <p>Current student roster. Edit information or remove students here.</p>
       <ul>
         {students.map((student) => (
           <li key={student.id}>
-            {student.firstName} {student.lastName}: {student.email}
-            <Link to={`/admin/teacher/edit/${student.id}`} style={{ marginLeft: '10px' }}>
+            {student.firstName} {student.lastName}: {student.email} Grade: {student.grade}
+            <Link to={`/admin/student/edit/${student.id}`} style={{ marginLeft: '10px' }}>
               Edit
             </Link>
             {/* <button onClick={() => onDelete(teacher.id)}>Delete teacher</button> */}

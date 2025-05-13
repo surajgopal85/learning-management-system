@@ -4,8 +4,9 @@ import { Subject } from "../../../types/subject";
 import { TeacherWithSubjectNames } from "../../../types/teacher";
 import { getSubjects } from "../../../api/subjectsApi";
 import { addCourse } from "../../../api/coursesApi";
+import { AddCourseProps } from "../../../types/course";
 
-export const AddCourse: React.FC = () => {
+export const AddCourse: React.FC<AddCourseProps> = ({ onAddSuccess }) => {
     const [subjects, setSubjects] = useState<Subject[]>([]);
     const [teachers, setTeachers] = useState<TeacherWithSubjectNames[]>([]);
 
@@ -58,6 +59,7 @@ export const AddCourse: React.FC = () => {
         try {
             await addCourse(name, subjectId, teacherIds);
             alert("✅ Course added!");
+            onAddSuccess();
             form.reset();
         } catch (error) {
             console.error("❌ Failed to add course:", error);

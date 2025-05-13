@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
 import { AddStudent } from "./Students/AddStudent";
-// import { ViewAllTeachers } from "./Teachers/ViewAllTeachers";
-// import { getTeachers, deleteTeacher } from "../../api/teachersApi";
-// import { TeacherWithSubjectNames } from "../../types/teacher";
 import { getStudents } from "../../api/studentsApi";
 import { ViewStudentBody } from "../../types/student";
 import { ViewAllStudents } from "./Students/ViewAllStudents";

@@ -32,4 +32,28 @@ router.post('/students', (req, res) => {
     });
   });
 
+// get a student for view/edit
+router.get('/student/:id', (req, res) => {
+  // get id from path
+  const { id } = req.params;
+  const sql = `
+    SELECT 
+      s.id AS studentId,
+      s.firstName,
+      s.lastName,
+      s.email,
+    FROM students s
+    LEFT JOIN course_students cs ON s.id = cs.student_id
+    WHERE s.id = ?
+  `;
+
+  
+
+
+});
+
+router.delete('/student/:id', (req, res) => {
+
+});
+
 module.exports = router;

@@ -71,10 +71,10 @@ router.get("/courses", (req, res) => {
 });
 
 router.post("/courses", (req, res) => {
-  const { name, subject_id, teacher_ids } = req.body;
+  const { name, subject_id, teacher_ids, student_ids } = req.body;
 
-  if (!name || !subject_id || isNaN(subject_id) || !Array.isArray(teacher_ids) || teacher_ids.length === 0) {
-    return res.status(400).send("Missing course name, subject_id, or teacher_ids.");
+  if (!name || !subject_id || isNaN(subject_id)) {
+    return res.status(400).send("Missing course name or subject_id.");
   }
 
   const insertCourseSql = 'INSERT INTO courses (name, subject_id) VALUES (?, ?)';
@@ -85,24 +85,50 @@ router.post("/courses", (req, res) => {
       return res.status(500).send("Error inserting course");
     }
 
-    const courseId = this.lastID; // ✅ Valid here
+    const courseId = this.lastID;
 
-    const placeholders = teacher_ids.map(() => "(?, ?)").join(", ");
-    const values = teacher_ids.flatMap(teacherId => [courseId, teacherId]);
-    const insertTeachersSql = `INSERT INTO course_teachers (course_id, teacher_id) VALUES ${placeholders}`;
+    // Helper function to handle optional linking
+    const linkTeachersAndStudents = () => {
+      if (Array.isArray(teacher_ids) && teacher_ids.length > 0) {
+        const teacherPlaceholders = teacher_ids.map(() => "(?, ?)").join(", ");
+        const teacherValues = teacher_ids.flatMap(teacherId => [courseId, teacherId]);
+        const insertTeachersSql = `INSERT INTO course_teachers (course_id, teacher_id) VALUES ${teacherPlaceholders}`;
 
-    db.run(insertTeachersSql, values, function (err2) {
-      if (err2) {
-        console.error("❌ Error inserting course_teachers:", err2.message);
-        return res.status(500).send("Error linking teachers to course");
+        db.run(insertTeachersSql, teacherValues, function(err2) {
+          if (err2) {
+            console.error("❌ Error linking teachers:", err2.message);
+            return res.status(500).send("Error linking teachers to course");
+          }
+          linkStudents(); // Continue with student linking
+        });
+      } else {
+        linkStudents(); // Skip teacher linking, go to students
       }
+    };
 
-      return res.status(200).send({
-        message: `✅ Course added with ID: ${courseId}`,
-      });
-    });
+    const linkStudents = () => {
+      if (Array.isArray(student_ids) && student_ids.length > 0) {
+        const studentPlaceholders = student_ids.map(() => "(?, ?)").join(", ");
+        const studentValues = student_ids.flatMap(studentId => [courseId, studentId]);
+        const insertStudentsSql = `INSERT INTO course_students (course_id, student_id) VALUES ${studentPlaceholders}`;
+
+        db.run(insertStudentsSql, studentValues, function(err3) {
+          if (err3) {
+            console.error("❌ Error linking students:", err3.message);
+            return res.status(500).send("Error linking students to course");
+          }
+          return res.status(200).send({ message: `✅ Course added with ID: ${courseId}` });
+        });
+      } else {
+        return res.status(200).send({ message: `✅ Course added with ID: ${courseId}` });
+      }
+    };
+
+    // Start linking after course is created
+    linkTeachersAndStudents();
   });
 });
+
 
 
 module.exports = router;

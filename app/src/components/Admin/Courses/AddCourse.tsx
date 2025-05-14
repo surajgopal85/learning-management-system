@@ -1,14 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import { getTeachers } from "../../../api/teachersApi";
+import { getSubjects } from "../../../api/subjectsApi";
+import { getStudents } from "../../../api/studentsApi";
 import { Subject } from "../../../types/subject";
 import { TeacherWithSubjectNames } from "../../../types/teacher";
-import { getSubjects } from "../../../api/subjectsApi";
+import { ViewStudentBody } from "../../../types/student";
 import { addCourse } from "../../../api/coursesApi";
 import { AddCourseProps } from "../../../types/course";
 
 export const AddCourse: React.FC<AddCourseProps> = ({ onAddSuccess }) => {
     const [subjects, setSubjects] = useState<Subject[]>([]);
     const [teachers, setTeachers] = useState<TeacherWithSubjectNames[]>([]);
+    const [students, setStudents] = useState<ViewStudentBody[]>([]);
 
 
     const courseFormRef = useRef(null); // reset form to blank!
@@ -39,6 +42,19 @@ export const AddCourse: React.FC<AddCourseProps> = ({ onAddSuccess }) => {
         fetchTeachers();
       }, []);
 
+      useEffect(() => {
+        const fetchStudents = async () => {
+            try {
+                const studentData = await getStudents();
+                setStudents(studentData);
+            } catch (err) {
+                console.error('Error fetching students', err);
+            }
+        };
+
+        fetchStudents();
+      }, []);
+
       const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -51,13 +67,16 @@ export const AddCourse: React.FC<AddCourseProps> = ({ onAddSuccess }) => {
         const teacherCheckboxes = form.querySelectorAll<HTMLInputElement>('input[name="teachers"]:checked');
         const teacherIds = Array.from(teacherCheckboxes).map((checkbox) => Number(checkbox.value));
 
+        const studentCheckboxes = form.querySelectorAll<HTMLInputElement>('input[name="students"]:checked');
+        const studentIds = Array.from(studentCheckboxes).map((checkbox) => Number(checkbox.value));
+
         if (!name || !subjectId || teacherIds.length === 0) {
             alert("Please fill in all fields and select at least one teacher.");
             return;
         }
 
         try {
-            await addCourse(name, subjectId, teacherIds);
+            await addCourse(name, subjectId, teacherIds, studentIds);
             alert("✅ Course added!");
             onAddSuccess();
             form.reset();
@@ -110,6 +129,23 @@ export const AddCourse: React.FC<AddCourseProps> = ({ onAddSuccess }) => {
                             </label>
                         </li>
                         ))}
+                </ul>
+                </fieldset>
+                <fieldset>
+                <legend>Add Students</legend>
+                <ul>
+                    {students.map((student) => (
+                        <li key={student.id}>
+                        <label>
+                            <input 
+                            type="checkbox"
+                            name="students"
+                            value={student.id}
+                            />
+                            {student.firstName} {student.lastName}
+                        </label>
+                        </li>
+                    ))}
                 </ul>
                 </fieldset>
                 <button type="submit">Create Course</button>

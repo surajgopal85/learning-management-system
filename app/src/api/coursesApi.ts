@@ -8,13 +8,13 @@ export async function getCourses() {
     return res.json();
 }
 
-export async function addCourse(name: string, subject_id: number, teacher_ids: number[]) {
+export async function addCourse(name: string, subject_id: number, teacher_ids: number[], student_ids: number[]) {
     const res = await fetch(`${API_URL}/courses`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({name, subject_id, teacher_ids})
+        body: JSON.stringify({name, subject_id, teacher_ids, student_ids })
     });
     if(!res.ok) {
         const errorData = await res.json();

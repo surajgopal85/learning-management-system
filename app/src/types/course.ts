@@ -22,7 +22,7 @@ export type AdminAllCourseView = {
         id: number;
         name: string;
     }[];
-    assignmentCategories: AssignmentCategory[];
+    assignmentCategories?: AssignmentCategory[];
 }
 
 export type AddCourseProps = {

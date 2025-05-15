@@ -2,10 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import { getTeachers } from "../../../api/teachersApi";
 import { getSubjects } from "../../../api/subjectsApi";
 import { getStudents } from "../../../api/studentsApi";
+import { addCourse } from "../../../api/coursesApi";
 import { Subject } from "../../../types/subject";
 import { TeacherWithSubjectNames } from "../../../types/teacher";
 import { ViewStudentBody } from "../../../types/student";
-import { addCourse } from "../../../api/coursesApi";
 import { AddCourseProps } from "../../../types/course";
 
 export const AddCourse: React.FC<AddCourseProps> = ({ onAddSuccess }) => {
@@ -116,7 +116,7 @@ export const AddCourse: React.FC<AddCourseProps> = ({ onAddSuccess }) => {
                 <fieldset>
                     {/* add legend after reading about <fieldset></fieldset> */}
                 <legend>Course Instructor</legend>
-                <ul>
+                <ul style={{ listStyleType: "none" }}>
                         {teachers.map((teacher) => (
                         <li key={teacher.id}>
                             <label>
@@ -125,7 +125,11 @@ export const AddCourse: React.FC<AddCourseProps> = ({ onAddSuccess }) => {
                                     name="teachers"
                                     value={teacher.id}
                                 />
-                                <span>{teacher.firstName} {teacher.lastName}, Subjects: Taught: {Array.isArray(teacher.subjects) ? teacher.subjects.join(", ") : "None"}</span>
+                                <span>{teacher.firstName} {teacher.lastName}, 
+                                    Dept(s): {Array.isArray(teacher.subjects) 
+                                    ? 
+                                    teacher.subjects.join(", ") : "None"}
+                                </span>
                             </label>
                         </li>
                         ))}
@@ -133,7 +137,7 @@ export const AddCourse: React.FC<AddCourseProps> = ({ onAddSuccess }) => {
                 </fieldset>
                 <fieldset>
                 <legend>Add Students</legend>
-                <ul>
+                <ul style={{ listStyleType: "none" }}>
                     {students.map((student) => (
                         <li key={student.id}>
                         <label>

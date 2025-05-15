@@ -1,4 +1,5 @@
 import { AdminAllCourseView } from "../../../types/course"
+import { Link } from "react-router-dom"
 
 interface ViewAllCoursesProps {
     courses: AdminAllCourseView[]
@@ -13,7 +14,10 @@ export const ViewAllCourses: React.FC<ViewAllCoursesProps> = ({ courses }) => {
       {courses.map((course) => (
           <li key={course.id}>
             <strong>Department:</strong> {course.subject} <br />
-            <strong>Course Name:</strong> {course.name} <br />
+            <strong>Course Name:</strong> 
+            <Link to={`/admin/courses/${course.id}`} style={{ marginLeft: '10px' }}>
+              {course.name} <br />
+            </Link>
             <strong>Teacher(s):</strong>{" "}
             {course.teachers.length > 0
               ? course.teachers.map((t) => t.name).join(", ")

@@ -39,10 +39,10 @@ console.log('Received request body:', req.body);
                 console.error('❌ Error fetching students:', err.message);
                 return res.status(500).send('Error fetching students for grades');
             }
-
+            // issue with setting to null here - not NULL constraint in schema.sql
             const insertGradeSql = `
             INSERT INTO grades (student_id, assignment_id, pointsEarned)
-            VALUES (?, ?, NULL)
+            VALUES (?, ?, 0)
             `;
 
             const gradesForAllCourseStudents = db.prepare(insertGradeSql);

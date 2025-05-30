@@ -9,6 +9,7 @@ interface ViewCourseGradebookProps {
 }
 
 export const CourseGradebook: React.FC<ViewCourseGradebookProps> = ({ course }) => {
+  const [timeout, setTimeout] = useState<NodeJS.Timeout | null>(null);
   const [assignmentCategories, setAssignmentCategories] = useState<AssignmentCategory[]>([]);
   const [assignments, setAssignments] = useState<CourseAssignment[]>([]);
   const [newCategory, setNewCategory] = useState({ name: '', weight: 0 });
@@ -79,6 +80,10 @@ export const CourseGradebook: React.FC<ViewCourseGradebookProps> = ({ course }) 
     console.error('Error adding assignment:', err);
   }
 };
+
+const handleGradeChange = (id: number, value: string) => {
+  
+}
 
 
   return (

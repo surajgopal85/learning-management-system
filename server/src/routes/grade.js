@@ -26,3 +26,5 @@ router.patch('/grades/:id', (req, res) => {
         });
     });
 });
+
+module.exports = router;

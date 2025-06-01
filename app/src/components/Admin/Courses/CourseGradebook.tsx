@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { GradeCell } from './Grades/GradeCell';
 import { AdminAllCourseView } from '../../../types/course';
 import { getAssignmentCategoriesForCourse, addAssignmentCategory } from '../../../api/assignmentCategoriesApi';
 import { getAssignmentsForCourse, addAssignment } from '../../../api/assignmentsApi';

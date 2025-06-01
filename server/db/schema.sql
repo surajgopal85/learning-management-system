@@ -92,6 +92,7 @@ CREATE TABLE grades (
   student_id INTEGER NOT NULL,
   assignment_id INTEGER NOT NULL,
   pointsEarned INTEGER NOT NULL,
+  UNIQUE (student_id, assignment_id),
   FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
   FOREIGN KEY (assignment_id) REFERENCES assignments(id) ON DELETE CASCADE
 );

@@ -6,8 +6,8 @@ const db = require("../util/db");
 router.post('/grades', (req, res) => {
     const { studentId, assignmentId } = req.body;
 
-    const insertGradesForAssignmentSql = `INSERT INTO grades (student_id, assignment_id, pointsEarned)
-                                          VALUES (?, ?, 0)`;
+    const insertGradesForAssignmentSql = `INSERT INTO grades (student_id, assignment_id)
+                                          VALUES (?, ?)`;
 
     db.run(insertGradesForAssignmentSql, [studentId, assignmentId], function(err) {
         if(err) {
@@ -16,7 +16,10 @@ router.post('/grades', (req, res) => {
             }
             return res.status(500).send('Error inserting grade');
         }
-        res.status(201).json({ id: this.lastID});
+        res.status(201).json({ 
+            message: '✅ Grade created',
+            id: this.lastID
+        });
     });
 })
 

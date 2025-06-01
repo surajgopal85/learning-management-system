@@ -1,19 +1,19 @@
 const API_URL = "http://localhost:3000/api";
 
-export async function createGrade(studentId: number, assignmentId: number, pointsEarned: number) {
+export async function createGrade(studentId: number, assignmentId: number) {
     const res = await fetch(`${API_URL}/grades`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ studentId, assignmentId, pointsEarned })
+        body: JSON.stringify({ studentId, assignmentId })
     })
     if(!res.ok) {
         const errorData = await res.json();
         console.error("Backend error:", errorData);
         throw new Error('Failed to add grade');
     }
-    return res.text();
+    return await res.json();
 }
 
 export async function updateGrade(id: number, pointsEarned: number) {

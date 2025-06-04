@@ -5,9 +5,9 @@ import { AdminTeacherView } from "./components/Admin/AdminTeacherView";
 import { AdminCourseView } from "./components/Admin/AdminCourseView";
 import { EditTeacherPage } from "./components/Admin/Teachers/EditTeacherPage";
 import { AdminStudentView } from "./components/Admin/AdminStudentView";
-import './App.css';
-import { AddCourse } from "./components/Admin/Courses/AddCourse";
 import { EditStudentInformation } from "./components/Admin/Students/EditStudentInformation";
+import { ViewCourseGradebookPage } from "./components/Admin/Courses/ViewCourseGradebookPage";
+import './App.css';
 
 const App: React.FC = () => {
   return (
@@ -38,6 +38,7 @@ const App: React.FC = () => {
           <Route path="/admin/teachers" element={<AdminTeacherView />} />
           <Route path="/admin/teacher/edit/:id" element={<EditTeacherPage />} />
           <Route path="/admin/courses" element={<AdminCourseView />} />
+          <Route path='/admin/courses/:id' element={< ViewCourseGradebookPage />}/>
           <Route path="/admin/students" element={<AdminStudentView />} />
           <Route path='/admin/student/edit/:id' element={<EditStudentInformation />}/>
         </Routes>

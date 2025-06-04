@@ -9,6 +9,9 @@ DROP TABLE IF EXISTS courses;
 DROP TABLE IF EXISTS teacher_subjects;
 DROP TABLE IF EXISTS subjects;
 DROP TABLE IF EXISTS teachers;
+DROP TABLE IF EXISTS grades;
+DROP TABLE IF EXISTS assignments;
+DROP TABLE IF EXISTS assignment_categories;
 
 CREATE TABLE teachers(
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -91,7 +94,8 @@ CREATE TABLE grades (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   student_id INTEGER NOT NULL,
   assignment_id INTEGER NOT NULL,
-  pointsEarned INTEGER NOT NULL,
+  pointsEarned INTEGER NOT NULL DEFAULT 0,
+  UNIQUE (student_id, assignment_id),
   FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
   FOREIGN KEY (assignment_id) REFERENCES assignments(id) ON DELETE CASCADE
 );

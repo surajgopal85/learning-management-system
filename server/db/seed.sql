@@ -9,7 +9,7 @@ INSERT INTO students (dateOfBirth, firstName, lastName, email, grade)
 VALUES 
 ('6-1-2012', 'Elliott', 'Hunker', 'eshunker@yahoo.com', 9), 
 ('3-15-2012', 'Jake', 'Perron', 'jperron@vice.com', 9),
-('9-11-2012', 'Rob', 'Lindon', 'rob@yipitdata.com', 9);
+('9-11-2012', 'Rob', 'Lindon', 'rob@yipitdata.com', 9),
 ('11-5-2012', 'Caitlin', 'Lund', 'whitetiger@techfleet.org', 9);
 
 INSERT INTO courses (name, subject_id) VALUES ('English 9', 1), ('Global History', 2), ('Algebra', 3), ('Biology', 4);
@@ -31,7 +31,7 @@ VALUES
 (4, 'Homework', 20), (4, 'Labs', 20), (4, 'Classwork', 15), (4, 'Exams', 45);
 
 INSERT INTO assignments 
-(name, course_id, category_id, creationDate, dueDate, name, totalPoints) 
+(course_id, category_id, creationDate, dueDate, name, totalPoints) 
 VALUES 
 (1, 1, '6-1-2025', '6-7-2025', 'Hwk 1', 20), (1, 4, '6-4-2025', '6-5-2025', 'Exam 1', 50),
 (2, 1, '6-1-2025', '6-7-2025', 'Hwk 1', 20), (2, 4, '6-4-2025', '6-5-2025', 'Exam 1', 50),

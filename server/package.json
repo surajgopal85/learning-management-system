@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/app.js",
     "reset-db": "rm -f database.sqlite && sqlite3 database.sqlite < db/schema.sql",
-    "db:reset-and-seed": "ts-node server/scripts/resetDb.ts"
+    "db:reset-and-seed": "ts-node scripts/reset-db.ts"
   },
   "dependencies": {
     "express": "^4.17.1",
@@ -16,6 +16,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^22.15.29"
+    "@types/node": "^22.15.29",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }

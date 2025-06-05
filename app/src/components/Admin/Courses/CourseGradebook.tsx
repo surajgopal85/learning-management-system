@@ -4,13 +4,13 @@ import { AdminAllCourseView } from '../../../types/course';
 import { getAssignmentCategoriesForCourse, addAssignmentCategory } from '../../../api/assignmentCategoriesApi';
 import { getAssignmentsForCourse, addAssignment } from '../../../api/assignmentsApi';
 import { CourseAssignment, AssignmentCategory } from '../../../types/assignment';
+import { createGrade, updateGrade, getGradesForCourse } from '../../../api/gradesApi';
 
 interface ViewCourseGradebookProps {
   course: AdminAllCourseView;
 }
 
 export const CourseGradebook: React.FC<ViewCourseGradebookProps> = ({ course }) => {
-  const [timeout, setTimeout] = useState<NodeJS.Timeout | null>(null);
   const [assignmentCategories, setAssignmentCategories] = useState<AssignmentCategory[]>([]);
   const [assignments, setAssignments] = useState<CourseAssignment[]>([]);
   const [newCategory, setNewCategory] = useState({ name: '', weight: 0 });
@@ -20,6 +20,10 @@ export const CourseGradebook: React.FC<ViewCourseGradebookProps> = ({ course }) 
     due_date: '',
     category_id: 0
   });
+  // add grades to state
+  // utilize a string 'key' made of studentId - assignmentId
+  const [grades, setGrades] = useState<{ [key: string]: number}>({});
+  const [gradeIdLookup, setGradeIdLookup] = useState<{ [key: string]: number }>({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,6 +48,30 @@ export const CourseGradebook: React.FC<ViewCourseGradebookProps> = ({ course }) 
   };
   fetchAssignments();
 }, [course.id]);
+
+// fetch assignments above, fetch grades after
+// Fetch grades
+  useEffect(() => {
+    const fetchGrades = async () => {
+      try {
+        const gradeList = await getGradesForCourse(course.id);
+        const gradeMap: { [key: string]: number } = {};
+        const idMap: { [key: string]: number } = {};
+
+        gradeList.forEach((grade: any) => {
+          const key = `${grade.studentId}-${grade.assignmentId}`;
+          gradeMap[key] = grade.pointsEarned;
+          idMap[key] = grade.gradeId;
+        });
+
+        setGrades(gradeMap);
+        setGradeIdLookup(idMap);
+      } catch (err) {
+        console.error('❌ Failed to fetch grades:', err);
+      }
+    };
+    fetchGrades();
+  }, [course.id]);
 
 
   const handleAddCategory = async (e: React.FormEvent) => {
@@ -82,10 +110,32 @@ export const CourseGradebook: React.FC<ViewCourseGradebookProps> = ({ course }) 
   }
 };
 
-const handleGradeChange = (id: number, value: string) => {
-  
-}
+const handleSaveGrade = async (
+    studentId: number,
+    assignmentId: number,
+    newPoints: number
+  ) => {
+    const key = `${studentId}-${assignmentId}`;
+    const gradeId = gradeIdLookup[key];
 
+    if (!gradeId) {
+      console.error(`❌ No grade ID found for key ${key}`);
+      return;
+    }
+
+    // Optimistic update
+    setGrades(prev => ({
+      ...prev,
+      [key]: newPoints
+    }));
+
+    try {
+      await updateGrade(gradeId, newPoints);
+    } catch (err) {
+      console.error('❌ Failed to update grade on backend:', err);
+      // Optional: revert optimistic update
+    }
+  };
 
   return (
     <div style={{ padding: '1rem' }}>
@@ -170,9 +220,18 @@ const handleGradeChange = (id: number, value: string) => {
             course.students.map(student => (
               <tr key={student.id}>
                 <td style={cellStyle}>{student.name}</td>
-                {assignments.map(a => (
-                  <td key={a.id} style={cellStyle}>--</td>
-                ))}
+                {assignments.map(a => {
+                  const key = `${student.id}-${a.id}`;
+                  const value = grades[key] ?? 0;
+                  return (
+                    <td key={a.id} style={cellStyle}>
+                      <GradeCell
+                        initialGrade={value}
+                        onSave={(val) => handleSaveGrade(student.id, a.id, val)}
+                      />
+                    </td>
+                  );
+                })}
               </tr>
             ))
           ) : (

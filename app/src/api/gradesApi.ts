@@ -1,5 +1,13 @@
 const API_URL = "http://localhost:3000/api";
 
+// we'll always be scoping grades fetch to a single course
+export async function getGradesForCourse(courseId: number) {
+  const res = await fetch(`${API_URL}/grades/${courseId}`);
+  if (!res.ok) throw new Error("Failed to fetch grades");
+
+  return res.json();
+}
+
 export async function createGrade(studentId: number, assignmentId: number) {
     const res = await fetch(`${API_URL}/grades`, {
         method: 'POST',

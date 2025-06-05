@@ -4,7 +4,7 @@ import { AdminAllCourseView } from '../../../types/course';
 import { getAssignmentCategoriesForCourse, addAssignmentCategory } from '../../../api/assignmentCategoriesApi';
 import { getAssignmentsForCourse, addAssignment } from '../../../api/assignmentsApi';
 import { CourseAssignment, AssignmentCategory } from '../../../types/assignment';
-import { createGrade, updateGrade, getGradesForCourse } from '../../../api/gradesApi';
+import { updateGrade, getGradesForCourse } from '../../../api/gradesApi';
 
 interface ViewCourseGradebookProps {
   course: AdminAllCourseView;
@@ -24,6 +24,9 @@ export const CourseGradebook: React.FC<ViewCourseGradebookProps> = ({ course }) 
   // utilize a string 'key' made of studentId - assignmentId
   const [grades, setGrades] = useState<{ [key: string]: number}>({});
   const [gradeIdLookup, setGradeIdLookup] = useState<{ [key: string]: number }>({});
+  // loading state to avoid seeing 0s
+  const [gradesLoaded, setGradesLoaded] = useState(false);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,6 +69,7 @@ export const CourseGradebook: React.FC<ViewCourseGradebookProps> = ({ course }) 
 
         setGrades(gradeMap);
         setGradeIdLookup(idMap);
+        setGradesLoaded(true); // now we see the grades (after they are set)
       } catch (err) {
         console.error('❌ Failed to fetch grades:', err);
       }
@@ -206,6 +210,7 @@ const handleSaveGrade = async (
       </form>
 
       {/* Gradebook Table */}
+      {gradesLoaded ? (
       <table style={{ borderCollapse: 'collapse', width: '100%', tableLayout: 'fixed' }}>
         <thead>
           <tr>
@@ -241,8 +246,14 @@ const handleSaveGrade = async (
               </td>
             </tr>
           )}
+          
+
         </tbody>
       </table>
+      ) : 
+      (
+          <p>Loading gradebook...</p>
+      )}
     </div>
   );
 };
